@@ -1,0 +1,48 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: api-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+zuul:
+  prefix: /api # 添加路由前缀
+  routes:
+    item-service: /item/** # 将商品微服务映射到/item/**
+    search-service: /search/**
+    user-service: /user/**
+    auth-service: /auth/**
+    cart-service: /cart/**
+    order-service: /order/**
+    upload-service:
+      path: /upload/**
+      serviceId: upload-service
+      strip-prefix: false  # 匹配时保留前缀
+  addHostHeader: true
+  sensitiveHeaders:
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 5000 # 熔断超时时长：10000ms
+ribbon:
+  ConnectTimeout: 1000 # 连接超时时间(ms)
+  ReadTimeout: 3500 # 通信超时时间(ms)
+  MaxAutoRetriesNextServer: 0 # 同一服务不同实例的重试次数
+  MaxAutoRetries: 0 # 同一实例的重试次数
+ly:
+  jwt:
+    pubKeyPath: D:/develop/IdeaProjects/main-frame/leyou/rsa/rsa.pub # 公钥地址
+    cookieName: LY_TOKEN # cookie的名称
+  filter:
+      allowPaths:
+        - /api/auth
+        - /api/search
+        - /api/user/register
+        - /api/user/check
+        - /api/user/code
+        - /api/item

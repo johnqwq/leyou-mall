@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+</head>
+<body>
+    <h1>
+        欢迎您：<span th:text="${user.name.toUpperCase().substring(4)}">请登录</span>
+        <br>
+        <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+    </h1>
+
+
+    <span th:text="'<font color=\'red\'>hello</font>'"></span>
+    <br>
+    <span th:utext="'<font color=\'red\'>hello</font>'"></span>
+
+    <h1>
+        <!--运算-->
+        <span th:text="100 * 100 > 9999"></span>
+    </h1>
+
+    <h1>
+        <ul>
+            <!--循环-->
+            <li th:each="user : ${users}">
+                <span th:text="${user.name}"></span>
+                <span th:text="${user.age}"></span>
+            </li>
+        </ul>
+    </h1>
+
+<script th:inline="javascript">
+    /*JS模板，用注释告诉系统去解析对象，users对象被直接处理为json格式*/
+    /*为了在纯静态环境下可以运行，其Thymeleaf代码可以被注释起来*/
+    const users = /*[[${users}]]*/ [];
+    console.log(users.length);
+
+    for (let i in users) {
+        console.log(users[i]);
+    }
+</script>
+</body>
+</html>
